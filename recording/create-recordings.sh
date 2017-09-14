@@ -12,6 +12,8 @@
 #
 #   Note: Gmail SMTP limited to 500 emails per day.
 #
+#   Default crontab schedule: "0 * * * *" or "@hourly"
+#
 #####################################################################################################################################
 
 ##  First we determine today's date and set variables $YR, $MO, and $DAY.

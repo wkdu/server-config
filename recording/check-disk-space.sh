@@ -6,6 +6,8 @@
 #
 #   Note: Gmail SMTP limited to 500 emails per day.
 #
+#   Default crontab schedule: "0 0 * * * " or "@daily"
+#
 #####################################################################################################################################
 
 YR=$(date +%Y)                                                           ## set variable $YR for year (4 digits)

@@ -1,0 +1,27 @@
+pcm.snoop {
+    type dsnoop
+    ipc_key 5978292
+    ipc_key_add_uid yes
+    slave {
+        pcm "hw:1,0"
+        channels 2
+        rate 44100
+        format S16_LE
+        period_size 5513
+        buffer_size 16539
+        periods 0
+        period_time 125011
+   }
+}
+
+pcm.!default {
+    type plug
+    slave {
+        pcm "hw:1,0"
+    }
+}
+
+ctl.!default {
+    type hw
+    card 1
+}

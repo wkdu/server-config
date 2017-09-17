@@ -44,6 +44,9 @@ if [ -d ${EXT_FS} ]; then
         echo "$NOW [DISK CHECK]: Less than 30 days free space remaining in $EXT_FS: $EXT_FREE KB remaining"
         echo "$NOW Less than 30 days free space of 320kbps recordings remaining in $EXT_FS: $EXT_FREE KB remaining" | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[WARNING] Less than 30 days free space available in EXTERNAL drive" admin@wkdu.org
 
+    else
+        EXT_REM=$( echo "$EXT_FREE / 2075517" | bc )    ## get days remaining (2075517KB = 1 day of 192kbps recordings)
+        echo "$NOW [DISK CHECK]: Plenty of disk space remaining in $EXT_FS: $EXT_FREE KB remaining ($EXT_REM days)"
     fi
 fi
 

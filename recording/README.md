@@ -4,8 +4,8 @@ Audio recordings can be accessed at [recordings.wkdu.org](http://recordings.wkdu
 
 On the server, the files are located at `/media/peter/Recordings/wkdu` mounted on `/dev/sdc2`.
 
-| File name | Location on server | Purpose | Crontab scheduling
-| --------- | ------------------ | ------- |
+| File name | Location on server | Purpose | Crontab scheduling |
+| --------- | ------------------ | ------- | ------------------ |
 | create-directory.sh | /home/peter/bin/ | Create directory for recordings each day on the external drive (or internal drive if unable to find external drive) | "@daily" |
 | create-recording.sh | /home/peter/bin/ | Create recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | "@hourly" |
 | continue-recording.sh | /home/peter/bin/ | Similar to `create-recording.sh` except it calculates how long until the end of the hour and creates a recording of that duration (in case server unexpectedly restarts) | "@reboot" |

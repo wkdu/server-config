@@ -2,16 +2,16 @@
 
 Audio recordings can be accessed at [recordings.wkdu.org](http://recordings.wkdu.org). By default, these files are recorded as 192kbps CBR MP3 files.
 
-On the server, the files are located at `/media/peter/Recordings/wkdu` mounted on `/dev/sdc2`.
+On the server, the audio recordings are located at `/media/peter/Recordings/wkdu` mounted on `/dev/sdc2`.
 
 | File name | Location on server | Purpose | Crontab scheduling |
 | --------- | ------------------ | ------- | ------------------ |
-| create-directory.sh | /home/peter/bin/ | Create directory for recordings each day on the external drive (or internal drive if unable to find external drive) | `"0 0 * * *"` (daily) |
-| create-recording.sh | /home/peter/bin/ | Create recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 * * * *"` (hourly) |
-| continue-recording.sh | /home/peter/bin/ | Similar to `create-recording.sh` except it calculates how long until the end of the hour and creates a recording of that duration (in case server unexpectedly restarts) | (on reboot) |
-| check-disk-space.sh | /home/peter/bin/ | Check disk space where recordings are stored and send an email notification if there is low disk space (at 7 and 30 days of recordings left) | `"1 0 * * *"` (daily) |
-| .asoundrc | /home/peter/ | ALSA sound config (sets up Audiobox USB audio device to record, uses `plug` chained with `dsnoop` to be able to record from the same device simultaneously) | n/a |
-| recordings.wkdu.org | /etc/nginx/sites-available/ | Nginx configuration for recordings.wkdu.org URL | n/a |
+| `create-directory.sh` | /home/peter/bin/ | Create directory for recordings each day on the external drive (or internal drive if unable to find external drive) | `"0 0 * * *"` (daily) |
+| `create-recording.sh` | /home/peter/bin/ | Create recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 * * * *"` (hourly) |
+| `continue-recording.sh` | /home/peter/bin/ | Similar to `create-recording.sh` except it calculates how long until the end of the hour and creates a recording of that duration (in case server unexpectedly restarts) | (on reboot) |
+| `check-disk-space.sh` | /home/peter/bin/ | Check disk space where recordings are stored and send an email notification if there is low disk space (at 7 and 30 days of recordings left) | `"1 0 * * *"` (daily) |
+| `.asoundrc` | /home/peter/ | ALSA sound config (sets up Audiobox USB audio device to record, uses `plug` chained with `dsnoop` to be able to record from the same device simultaneously) | n/a |
+| `recordings.wkdu.org` | /etc/nginx/sites-available/ | Nginx configuration for recordings.wkdu.org URL | n/a |
 
 ### Crontab settings (production)
 

@@ -1,6 +1,6 @@
 ## Streaming Server
 
-The streams can be accessed at [streams.wkdu.org](http://streams.wkdu.org). These files below set up an AAC+ stream and an MP3 stream.
+The streams can be accessed at [streams.wkdu.org](http://streams.wkdu.org). These files below set up a 64kbps AAC+ stream and a 128kbps MP3 stream.
 
 | File name | Location on server | Purpose |
 | --------- | ------------------ | ------- |

@@ -1,0 +1,9 @@
+server {
+        listen 80;
+
+        server_name streams.wkdu.org;
+        
+        location / {
+                proxy_pass                      http://streams.wkdu.org:8000;
+        }
+}

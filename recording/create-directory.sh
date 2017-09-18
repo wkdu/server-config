@@ -22,6 +22,11 @@ NOW=$(date +'%Y/%m/%d %T')                                              ## sets 
 ## Default external drive location (this may need to be updated if the drive name changes)
 EXT_DIR="/media/peter/Recordings"
 
+## Check if external directory name is correct, otherwise get dir name
+if [ ! -d "$EXT_DIR" ]; then
+    EXT_DIR=$(df -h | grep '/dev/sdc2' | awk '{print $6}')
+fi
+
 ## Test to see if external drive directory exists
 if [ -d "$EXT_DIR" ]; then
 
@@ -32,29 +37,14 @@ if [ -d "$EXT_DIR" ]; then
         echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 
         echo "$NOW Created directory in external drive: $EXT_DIR/wkdu/$YR-$MO-$DAY"
-        mkdir ${EXT_DIR}"/wkdu/$YR-$MO-$DAY"
+        mkdir "$EXT_DIR/wkdu/$YR-$MO-$DAY"
 
     fi
 
 else
 
-    EXT2=$(df -h | grep '/dev/sdc2' | awk '{print $6}')
-
-     ## Check for a different external drive location since it was unable to find the default
-    if [ -d "$EXT2" ]; then
-        EXT_DIR=EXT2
-        if [ ! -d "$EXT2/wkdu/$YR-$MO-$DAY" ]; then
-
-            ## put separation line in create-recording.log
-            echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
-
-            echo "$NOW Created directory in external drive: $EXT2/wkdu/$YR-$MO-$DAY"
-            mkdir "$EXT2/wkdu/$YR-$MO-$DAY"
-
-        fi
-
     ## Still couldn't find external drive, let's check for a folder on the computer's internal drives
-    elif [ ! -d "/data/recordings/$YR-$MO-$DAY/" ]; then
+    if [ -d "/data/recordings/$YR-$MO-$DAY/" ]; then
 
         ## Send out email alert
         echo "$NOW Unable to find external drive during create-directory cronjob. Created directory in internal drive instead: /data/recordings/$YR-$MO-$DAY" | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ALERT] Created new directory in INTERNAL drive" admin@wkdu.org
@@ -64,6 +54,12 @@ else
 
         echo "$NOW Created directory in internal drive: /data/recordings/$YR-$MO-$DAY/"
         mkdir "/data/recordings/$YR-$MO-$DAY"
+
+    ## couldn't find internal or external drive directories for recordings
+    else
+
+        ## Send out email alert
+        echo "$NOW Unable to find internal or external drive location during create-directory cronjob. NO DIRECTORY CREATED." | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ERROR] Unable to create directory for recordings." admin@wkdu.org
 
     fi
 

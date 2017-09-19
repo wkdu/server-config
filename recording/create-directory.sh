@@ -59,7 +59,10 @@ else
     else
 
         ## Send out email alert
-        echo "$NOW Unable to find internal or external drive location during create-directory cronjob. NO DIRECTORY CREATED." | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ERROR] Unable to create directory for recordings." admin@wkdu.org
+        echo "$NOW Unable to find internal or external drive location during create-directory cronjob. NO DIRECTORY CREATED on $YR-$MO-$DAY." | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ERROR] Unable to create directory for recordings." admin@wkdu.org
+
+        echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+        echo "$NOW Unable to create directory in internal or external drive ($YR-$MO-$DAY)"
 
     fi
 

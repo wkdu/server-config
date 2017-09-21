@@ -3,9 +3,22 @@ server {
         server_name     recordings.wkdu.org;
 
         location / {
+                auth_basic              "Recordings";
+                auth_basic_user_file    /var/www/recordings.wkdu.org/.htpasswd;
                 alias                   /media/peter/Recordings/wkdu/;
                 autoindex               on;
                 autoindex_exact_size    off;
                 autoindex_localtime     on;
         }
+
+    listen 443 ssl; # managed by Certbot
+ssl_certificate /etc/letsencrypt/live/recordings.wkdu.org/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/recordings.wkdu.org/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
 }

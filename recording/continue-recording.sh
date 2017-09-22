@@ -61,5 +61,6 @@ else
 
 fi
 
+
 NOW=$(date +'%Y/%m/%d %T')                                              ## resets date / time variable $NOW to current time
 echo "$NOW Finished recording audio file: $YR-$MO-$DAY-$H$M.mp3"        ## puts stop recording time entry in record.log

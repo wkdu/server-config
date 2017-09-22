@@ -2,6 +2,12 @@ server {
         listen          80;
         server_name     recordings.wkdu.org;
 
+        location ~* (.*\.mp3) {
+                root /media/peter/Recordings/wkdu/;
+                types { application/octet-stream .mp3; }
+                default_type application/octet-stream;
+        }
+
         location / {
                 auth_basic              "Recordings";
                 auth_basic_user_file    /var/www/recordings.wkdu.org/.htpasswd;
@@ -9,6 +15,20 @@ server {
                 autoindex               on;
                 autoindex_exact_size    off;
                 autoindex_localtime     on;
+        }
+
+        location /archives {
+                auth_basic              "Recordings";
+                auth_basic_user_file    /var/www/recordings.wkdu.org/.htpasswd;
+                alias                   /media/peter/Archives/wkdu/;
+                autoindex               on;
+                autoindex_exact_size    off;
+                autoindex_localtime     on;
+
+                location ~* (.*\.mp3) { 
+                        types { application/octet-stream .mp3; }
+                        default_type application/octet-stream;
+                }
         }
 
     listen 443 ssl; # managed by Certbot

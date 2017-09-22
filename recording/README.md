@@ -16,10 +16,11 @@ On the server, the audio recordings are located at `/media/peter/Recordings/wkdu
 ### Crontab settings (production)
 
     # m h d m w     command
-      0 0 * * *     /bin/bash /home/peter/bin/create-directory.sh >> /home/peter/log/recordings/create.log 2>&1
-      0 * * * *     /bin/bash /home/peter/bin/create-recording.sh >> /home/peter/log/recordings/create.log 2>&1
+      0 0 * * *     /bin/bash /home/peter/bin/create-directory.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      0 * * * *     /bin/bash /home/peter/bin/create-recording.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
       1 0 * * *     /bin/bash /home/peter/bin/check-disk-space.sh >> /home/peter/log/recordings/check-disk.log 2>&1
-      @reboot       /bin/bash /home/peter/bin/contine-recording.sh >> /home/peter/log/recordings/create.log 2>&1
+      @reboot       /bin/sleep 85  && /bin/bash /home/peter/bin/create-directory.sh >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      @reboot       /bin/sleep 100 && /bin/bash /home/peter/bin/continue-recording.sh >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/continue-error.log
 
 ### Server administrative details
 
@@ -27,3 +28,4 @@ On the server, the audio recordings are located at `/media/peter/Recordings/wkdu
 * `wkdu` is a non-sudo user on the recordings server. SSH access is disabled for this user.
 * [Nginx](http://nginx.org/en/docs/http/ngx_http_autoindex_module.html) is installed so all computers can access recordings remotely by visiting recordings.wkdu.org.
 * [Netatalk](http://netatalk.sourceforge.net/) is configured to allow Apple computers (iMacs) at the station to connect directly to the recordings server via the Apple Filing Protocol (AFP).
+* Recordings are delayed 100 seconds after reboot to allow time for USB devices (AudioBox USB, and external hard drives) to properly mount.

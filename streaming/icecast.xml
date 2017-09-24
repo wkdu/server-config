@@ -2,7 +2,7 @@
     <limits>
         <clients>1500</clients>
         <sources>2</sources>
-        <threadpool>5</threadpool>
+        <threadpool>20</threadpool>
         <queue-size>524288</queue-size>
         <client-timeout>30</client-timeout>
         <header-timeout>15</header-timeout>
@@ -52,7 +52,7 @@
 
     <!-- You may have multiple <listener> elements -->
     <listen-socket>
-        <port>8000</port>
+        <port>80</port>
         <!-- <bind-address>127.0.0.1</bind-address>-->
         <!-- <shoutcast-mount>/stream</shoutcast-mount> -->
     </listen-socket>
@@ -118,8 +118,8 @@
 
         <max-listeners>500</max-listeners>
 
-    <stream-name>WKDU Philadelphia 91.7FM (128kbps MP3)</stream-name>
-        <stream-description>Drexel University's student-run non-commercial radio</stream-description>
+    <stream-name>WKDU Philadelphia 91.7FM (MP3)</stream-name>
+        <stream-description>Drexel University's non-commercial college radio</stream-description>
         <stream-url>http://wkdu.org</stream-url>
         <genre>Free-Format</genre>
         <bitrate>128kbps</bitrate>
@@ -150,8 +150,8 @@
 
     <max-listeners>1000</max-listeners>
 
-    <stream-name>WKDU Philadelphia 91.7FM (64kbps AAC+)</stream-name>
-    <stream-description>Drexel University's student-run non-commercial radio</stream-description>
+    <stream-name>WKDU Philadelphia 91.7FM (AAC+)</stream-name>
+    <stream-description>Drexel University's non-commercial college radio</stream-description>
     <stream-url>http://wkdu.org</stream-url>
     <genre>Free-Format</genre>
     <bitrate>64kbps</bitrate>
@@ -231,11 +231,9 @@
 
     <security>
         <chroot>0</chroot>
-        <!--
         <changeowner>
-            <user>nobody</user>
-            <group>nogroup</group>
+            <user>icecast2</user>
+            <group>icecast</group>
         </changeowner>
-        -->
     </security>
 </icecast>

@@ -18,7 +18,7 @@ audiobox=input.alsa(device="plughw:1,0")
 
 output.icecast(%fdkaac(channels=2, samplerate=44100, bitrate=64, afterburner=false, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=false),
   host = "streams.wkdu.org",
-  port = 8000, password = "hackme",
+  port = 80, password = "hackme",
   mount = "stream.aac",
   audiobox)
 
@@ -28,6 +28,6 @@ output.icecast(%fdkaac(channels=2, samplerate=44100, bitrate=64, afterburner=fal
 
 output.icecast(%mp3(bitrate=128),
   host = "streams.wkdu.org",
-  port = 8000, password = "hackme",
+  port = 80, password = "hackme",
   mount = "stream.mp3",
   audiobox)

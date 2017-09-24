@@ -6,7 +6,7 @@ The streams can be accessed at [streams.wkdu.org](http://streams.wkdu.org). Thes
 | --------- | ------------------ | ------- |
 | `main.liq` | /home/peter/liquidsoap-daemon/ | Liquidsoap stream setup file |
 | `icecast.xml` | /etc/icecast2/ | Icecast2 settings |
+| `icecast2` | /etc/default/ | Icecast2 defaults (run as root to listen on port 80) |
 | `rc.local` | /etc/ | Run liquidsoap daemon automatically on server startup |
-| `streams.wkdu.org` | /etc/nginx/sites-available/ | Nginx configuration for streams.wkdu.org URL
 
 Production-level passwords in setting files have been replaced with ``"hackme"``.

@@ -2,21 +2,21 @@
 #
 # create-directory.sh
 #
-# This is a script that will automatically create a new directory/folder for a given day's recordings.
+# This is a script that will automatically create a new directory/folder for the next day's recordings.
 #
 #
 #   Note: Gmail SMTP limited to 500 emails per day.
 #
 #   Default crontab schedule:
-#       "@daily" or "0 0 * * *"
+#       "59 23 * * *"
 #
 #####################################################################################################################################
 
-##  First we determine today's date and set variables $YR, $MO, and $DAY.
+##  First we determine tomorrow's date and set variables $YR, $MO, and $DAY.
 ##  Also set variable $NOW for current date and time.
-YR=$(date +%Y)                                                          ## set variable $YR for year (4 digits)
-MO=$(date +%m)                                                          ## set variable $MO for month
-DAY=$(date +%d)                                                         ## set variable $DAY for day
+YR=$(date --date="tomorrow" +%Y)                                                          ## set variable $YR for year (4 digits)
+MO=$(date --date="tomorrow" +%m)                                                          ## set variable $MO for month
+DAY=$(date --date="tomorrow" +%d)                                                         ## set variable $DAY for day
 NOW=$(date +'%Y/%m/%d %T')                                              ## sets date / time variable $NOW
 
 ## Default external drive location (this may need to be updated if the drive name changes)
@@ -30,7 +30,7 @@ fi
 ## Test to see if external drive directory exists
 if [ -d "$EXT_DIR" ]; then
 
-    ## Check for existing directory for today, if not make one
+    ## Check for existing directory for tomorrow, if not make one
     if [ ! -d "$EXT_DIR/wkdu/$YR-$MO-$DAY" ]; then              
 
         ## put separation line in create-recording.log

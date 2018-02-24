@@ -6,7 +6,7 @@ On the server, the audio recordings are located at `/media/peter/Recordings/wkdu
 
 | File name | Location on server | Purpose | Crontab scheduling |
 | --------- | ------------------ | ------- | ------------------ |
-| `create-directory.sh` | /home/peter/bin/ | Create directory for recordings each day on the external drive (or internal drive if unable to find external drive) | `"0 0 * * *"` (daily) |
+| `create-directory.sh` | /home/peter/bin/ | Create directory for the next day of recordings on the external drive (or internal drive if unable to find external drive) | `"0 0 * * *"` (daily) |
 | `create-recording.sh` | /home/peter/bin/ | Create recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 * * * *"` (hourly) |
 | `continue-recording.sh` | /home/peter/bin/ | Similar to `create-recording.sh` except it calculates how long until the end of the hour and creates a recording of that duration (in case server unexpectedly restarts) | (on reboot) |
 | `check-disk-space.sh` | /home/peter/bin/ | Check disk space where recordings are stored and send an email notification if there is low disk space (at 7 and 30 days of recordings left) | `"1 0 * * *"` (daily) |
@@ -16,7 +16,7 @@ On the server, the audio recordings are located at `/media/peter/Recordings/wkdu
 ### Crontab settings (production)
 
     # m h d m w     command
-      0 0 * * *     /bin/bash /home/peter/bin/create-directory.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      59 23 * * *     /bin/bash /home/peter/bin/create-directory.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
       0 * * * *     /bin/bash /home/peter/bin/create-recording.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
       1 0 * * *     /bin/bash /home/peter/bin/check-disk-space.sh >> /home/peter/log/recordings/check-disk.log 2>&1
       @reboot       /bin/sleep 85  && /bin/bash /home/peter/bin/create-directory.sh >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log

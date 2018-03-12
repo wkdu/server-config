@@ -39,12 +39,24 @@ fi
 ## Start a 1 hour recording at CD quality (16bit little endian / S16_LE, stereo, 44.1KHz) and pipe to compressed MP3 format
 if [ -d "$EXT_DIR" ]; then
 
+    ## Last-second check to see if folder for current day's recordings exists
+    if [ ! -d "$EXT_DIR/wkdu/$YR-$MO-$DAY"]; then
+         mkdir -p "$EXT_DIR/wkdu/$YR-$MO-$DAY"
+         echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
+    fi
+
     echo "$NOW Started recording audio file to external drive: $EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3"
 
     ## Records audio stream for 60 minutes (3600 seconds)
     arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -r -b 192 - "$EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
 
 else
+
+    ## Last-second check to see if folder for current day's recordings exists
+    if [ ! -d "/data/recordings/$YR-$MO-$DAY"]; then
+         mkdir -p "/data/recordings/$YR-$MO-$DAY"
+         echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
+    fi
 
     ## Send out email alert warning that the external drive could not be found
     echo "$NOW Unable to find external drive during create-recording cronjob. Started recording in internal drive instead: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ALERT] Created new recording in INTERNAL drive" admin@wkdu.org

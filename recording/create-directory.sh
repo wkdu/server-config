@@ -14,9 +14,12 @@
 
 ##  First we determine tomorrow's date and set variables $YR, $MO, and $DAY.
 ##  Also set variable $NOW for current date and time.
-YR=$(date --date="tomorrow" +%Y)                                                          ## set variable $YR for year (4 digits)
-MO=$(date --date="tomorrow" +%m)                                                          ## set variable $MO for month
-DAY=$(date --date="tomorrow" +%d)                                                         ## set variable $DAY for day
+##
+##  Note: Since we schedule the cronjob to run at 23:59/11:59PM, we will check the date 1 hour from now.
+
+YR=$(date --date="+1 hour" +%Y)                                                          ## set variable $YR for year (4 digits)
+MO=$(date --date="+1 hour" +%m)                                                          ## set variable $MO for month
+DAY=$(date --date="+1 hour" +%d)                                                         ## set variable $DAY for day
 NOW=$(date +'%Y/%m/%d %T')                                              ## sets date / time variable $NOW
 
 ## Default external drive location (this may need to be updated if the drive name changes)

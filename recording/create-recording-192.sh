@@ -48,7 +48,7 @@ if [ -d "$EXT_DIR" ]; then
     echo "$NOW Started recording audio file to external drive: $EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3"
 
     ## Records audio stream for 60 minutes (3600 seconds)
-    arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -r -b 192 - "$EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
+    arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -m s -r -b 192 - "$EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
 
 else
 
@@ -63,7 +63,7 @@ else
     echo "$NOW Started recording audio file to internal drive: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3 (could not find external drive)"
 
     ## Records audio stream for 60 minutes (3600 seconds)
-    arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -r -b 192 - "/data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
+    arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -m s -r -b 192 - "/data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
 
 fi
 

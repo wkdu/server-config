@@ -1,13 +1,14 @@
 ## Recordings Server
 
-Audio recordings can be accessed at [recordings.wkdu.org](http://recordings.wkdu.org). By default, these files are recorded as 192kbps CBR MP3 files.
+Audio recordings can be accessed at [recordings.wkdu.org](http://recordings.wkdu.org). By default, these files are recorded as 192kbps CBR MP3 files. Depending on the time of day, some files are recorded as 320kbps CBR MP3 files.
 
 On the server, the audio recordings are located at `/media/peter/Recordings/wkdu` mounted on `/dev/sdc2`.
 
-| File name | Location on server | Purpose | Crontab scheduling |
+| File name | Location on server | Purpose | Default crontab scheduling |
 | --------- | ------------------ | ------- | ------------------ |
 | `create-directory.sh` | /home/peter/bin/ | Create directory for the next day of recordings on the external drive (or internal drive if unable to find external drive) | `"59 23 * * *"` (daily at 11:59PM) |
-| `create-recording.sh` | /home/peter/bin/ | Create recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 * * * *"` (hourly) |
+| `create-recording-192.sh` | /home/peter/bin/ | Create 192kbps recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 1-11 * * *"` (hourly between 1-11AM) |
+| `create-recording-320.sh` | /home/peter/bin/ | Create 320kbps recordings on the external drive (or internal drive if unable to find external drive) by recording audio from the AudioBox USB | `"0 12-23 * * *"` (hourly between 12-11PM) |
 | `continue-recording.sh` | /home/peter/bin/ | Similar to `create-recording.sh` except it calculates how long until the end of the hour and creates a recording of that duration (in case server unexpectedly restarts) | (on reboot) |
 | `check-disk-space.sh` | /home/peter/bin/ | Check disk space where recordings are stored and send an email notification if there is low disk space (at 7 and 30 days of recordings left) | `"1 0 * * *"` (daily) |
 | `.asoundrc` | /home/peter/ | ALSA sound config (sets up Audiobox USB audio device to record, uses `plug` chained with `dsnoop` to be able to record from the same device simultaneously) | n/a |
@@ -17,7 +18,9 @@ On the server, the audio recordings are located at `/media/peter/Recordings/wkdu
 
     # m h d m w     command
       59 23 * * *     /bin/bash /home/peter/bin/create-directory.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
-      0 * * * *     /bin/bash /home/peter/bin/create-recording.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      0 0 * * *     /bin/bash /home/peter/bin/create-recording-320.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      0 1-11 * * *     /bin/bash /home/peter/bin/create-recording-192.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
+      0 12-23 * * *     /bin/bash /home/peter/bin/create-recording-320.sh >>  >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
       1 0 * * *     /bin/bash /home/peter/bin/check-disk-space.sh >> /home/peter/log/recordings/check-disk.log 2>&1
       @reboot       /bin/sleep 85  && /bin/bash /home/peter/bin/create-directory.sh >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/create-error.log
       @reboot       /bin/sleep 100 && /bin/bash /home/peter/bin/continue-recording.sh >> /home/peter/log/recordings/create.log 2>/home/peter/log/recordings/continue-error.log

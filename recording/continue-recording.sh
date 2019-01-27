@@ -46,7 +46,7 @@ fi
 if [ -d "$EXT_DIR" ]; then
 
     ## Last-second check to see if folder for current day's recordings exists (may not exist due to computer restart or a Daylight Savings hiccup)
-    if [ ! -d "$EXT_DIR/wkdu/$YR-$MO-$DAY"]; then
+    if [ ! -d "$EXT_DIR/wkdu/$YR-$MO-$DAY" ]; then
          mkdir -p "$EXT_DIR/wkdu/$YR-$MO-$DAY"
          echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
     fi
@@ -59,7 +59,7 @@ if [ -d "$EXT_DIR" ]; then
 else
 
     ## Last-second check to see if folder for current day's recordings exists (may not exist due to computer restart or a Daylight Savings hiccup)
-    if [ ! -d "/data/recordings/$YR-$MO-$DAY"]; then
+    if [ ! -d "/data/recordings/$YR-$MO-$DAY" ]; then
          mkdir -p "/data/recordings/$YR-$MO-$DAY"
          echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
     fi

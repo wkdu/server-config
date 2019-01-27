@@ -42,10 +42,10 @@ if [ -d "$EXT_DIR" ]; then
     ## Last-second check to see if folder for current day's recordings exists
     if [ ! -d "$EXT_DIR/wkdu/$YR-$MO-$DAY" ]; then
          mkdir -p "$EXT_DIR/wkdu/$YR-$MO-$DAY"
-         echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
+         echo "$NOW [320] Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
     fi
 
-    echo "$NOW Started recording audio file to external drive: $EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3"
+    echo "$NOW [320] Started recording audio file to external drive: $EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3"
 
     ## Records audio stream for 60 minutes (3600 seconds)
     arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -m s -r -b 320 - "$EXT_DIR/wkdu/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
@@ -55,12 +55,12 @@ else
     ## Last-second check to see if folder for current day's recordings exists
     if [ ! -d "/data/recordings/$YR-$MO-$DAY" ]; then
          mkdir -p "/data/recordings/$YR-$MO-$DAY"
-         echo "$NOW Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
+         echo "$NOW [320] Current day's recording directory does not exist. Creating directory: $YR-$MO-$DAY"
     fi
 
     ## Send out email alert warning that the external drive could not be found
-    echo "$NOW Unable to find external drive during create-recording cronjob. Started recording in internal drive instead: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ALERT] Created new recording in INTERNAL drive" admin@wkdu.org
-    echo "$NOW Started recording audio file to internal drive: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3 (could not find external drive)"
+    echo "$NOW [320] Unable to find external drive during create-recording cronjob. Started recording in internal drive instead: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" | mail -a "From: Recordings Server <recordings@wkdu.org>" -s "[ALERT] Created new recording in INTERNAL drive" admin@wkdu.org
+    echo "$NOW [320] Started recording audio file to internal drive: /data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3 (could not find external drive)"
 
     ## Records audio stream for 60 minutes (3600 seconds)
     arecord -D plug:snoop -d3600 -f cd -t raw -q | lame -m s -r -b 320 - "/data/recordings/$YR-$MO-$DAY/$YR-$MO-$DAY-$H$M.mp3" --quiet
@@ -68,4 +68,4 @@ else
 fi
 
 NOW=$(date +'%Y/%m/%d %T')                                              ## resets date / time variable $NOW to current time
-echo "$NOW Finished recording audio file: $YR-$MO-$DAY-$H$M.mp3"        ## puts stop recording time entry in record.log
+echo "$NOW [320] Finished recording audio file: $YR-$MO-$DAY-$H$M.mp3"        ## puts stop recording time entry in record.log

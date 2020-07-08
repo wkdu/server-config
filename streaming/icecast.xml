@@ -172,7 +172,7 @@
         <stream-description>Drexel University's non-commercial college radio</stream-description>
     <stream-url>http://streams.wkdu.org/listen.aac</stream-url>
         <genre>Free-Format</genre>
-        <bitrate>192kbps</bitrate>
+        <bitrate>128kbps</bitrate>
     </mount>
 
     <!--- HE_AAC_v2 STREAM MOUNT -->

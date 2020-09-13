@@ -23,11 +23,11 @@ DAY=$(date --date="+1 hour" +%d)                                                
 NOW=$(date +'%Y/%m/%d %T')                                              ## sets date / time variable $NOW
 
 ## Default external drive location (this may need to be updated if the drive name changes)
-EXT_DIR="/media/peter/Recordings"
+EXT_DIR="/media/wkdu/Recordings"
 
 ## Check if external directory name is correct, otherwise get dir name
 if [ ! -d "$EXT_DIR" ]; then
-    EXT_DIR=$(df -h | grep '/dev/sdc2' | awk '{print $6}')
+    EXT_DIR=$(df -h | grep '/dev/sdc1' | awk '{print $6}')
 fi
 
 ## Test to see if external drive directory exists

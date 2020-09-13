@@ -29,11 +29,11 @@ H=$(date +%H)                                                           ## set v
 M=$(date +%M)                                                           ## set variable $M for minute
 
 ## Default external drive location (this may need to be updated if the drive name changes)
-EXT_DIR="/media/peter/Recordings"
+EXT_DIR="/media/wkdu/Recordings"
 
 ## Check if external directory name is correct, otherwise get dir name
 if [ ! -d "$EXT_DIR" ]; then
-    EXT_DIR=$(df -h | grep '/dev/sdc2' | awk '{print $6}')
+    EXT_DIR=$(df -h | grep '/dev/sdc1' | awk '{print $6}')
 fi
 
 ## Start a 1 hour recording at CD quality (16bit little endian / S16_LE, stereo, 44.1KHz) and pipe to compressed MP3 format

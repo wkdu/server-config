@@ -13,8 +13,8 @@
 
 NOW=$(date +'%Y/%m/%d %T')                                  ## sets date / time variable $NOW
 
-EXT_FS="/dev/sdc2"                                          ## Filesystem name for external hard drive
-EXT_DIR=$(df -h | grep '/dev/sdc2' | awk '{print $6}')      ## Get directory name for filesystem mounted at /dev/sdc2
+EXT_FS="/dev/sdc1"                                          ## Filesystem name for external hard drive
+EXT_DIR=$(df -h | grep '/dev/sdc1' | awk '{print $6}')      ## Get directory name for filesystem mounted at /dev/sdc1
 
 REM_30D_192=62265500                                        ## ~30 days of free space left with 192kbps recordings (in kilobytes)
 REM_7D_192=14528617                                         ## ~7 days of free space left with 192kbps recordings (in kilobytes)

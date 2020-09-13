@@ -17,10 +17,10 @@ On the server, the audio recordings are located at `/media/wkdu/Recordings/wkdu`
 ### Crontab settings (production)
 
     # m h  dom mon dow   command
-      59 23 * * *     /bin/bash /home/wkdu/bin/create-directory.sh >>  >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
-      0 0 * * *     /bin/bash /home/wkdu/bin/create-recording-320.sh >>  >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
-      0 1-11 * * *     /bin/bash /home/wkdu/bin/create-recording-192.sh >>  >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
-      0 12-23 * * *     /bin/bash /home/wkdu/bin/create-recording-320.sh >>  >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
+      59 23 * * *     /bin/bash /home/wkdu/bin/create-directory.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
+      0 0 * * *     /bin/bash /home/wkdu/bin/create-recording-320.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
+      0 1-11 * * *     /bin/bash /home/wkdu/bin/create-recording-192.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
+      0 12-23 * * *     /bin/bash /home/wkdu/bin/create-recording-320.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
       1 0 * * *     /bin/bash /home/wkdu/bin/check-disk-space.sh >> /home/wkdu/log/recordings/check-disk.log 2>&1
       @reboot       /bin/sleep 85  && /bin/bash /home/wkdu/bin/create-directory.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/create-error.log
       @reboot       /bin/sleep 100 && /bin/bash /home/wkdu/bin/continue-recording.sh >> /home/wkdu/log/recordings/create.log 2>/home/wkdu/log/recordings/continue-error.log

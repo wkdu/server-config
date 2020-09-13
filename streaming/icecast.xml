@@ -1,19 +1,23 @@
 <icecast>
+    <location>Philadelphia, PA, USA</location>
+    <admin>admin@wkdu.org</admin>
     <limits>
-        <clients>1500</clients>
+        <clients>500</clients>
         <sources>2</sources>
-        <threadpool>20</threadpool>
+        <!--<sources>3</sources>-->
         <queue-size>524288</queue-size>
         <client-timeout>30</client-timeout>
         <header-timeout>15</header-timeout>
         <source-timeout>10</source-timeout>
-        <!-- If enabled, this will provide a burst of data when a client
-             first connects, thereby significantly reducing the startup
-             time for listeners that do substantial buffering. However,
-             it also significantly increases latency between the source
-             client and listening client.  For low-latency setups, you
-             might want to disable this. -->
-        <burst-on-connect>1</burst-on-connect>
+
+        <!-- how many threads to use for processing clients, should be
+             based on the number of CPUs or cores -->
+        <workers>1</workers>
+
+        <queue-size>524288</queue-size>
+        <client-timeout>30</client-timeout>
+        <header-timeout>15</header-timeout>
+        <source-timeout>10</source-timeout>
         <!-- same as burst-on-connect, but this allows for being more
              specific on how much to burst. Most people won't need to
              change from the default 64k. Applies to all mountpoints  -->
@@ -31,12 +35,6 @@
         <admin-password>hackme</admin-password>
     </authentication>
 
-    <!-- set the mountpoint for a shoutcast source to use, the default if not
-         specified is /stream but you can change it here if an alternative is
-         wanted or an extension is required
-    <shoutcast-mount>/live.nsv</shoutcast-mount>
-    -->
-
     <!-- Uncomment this if you want directory listings -->
     <!--
     <directory>
@@ -50,36 +48,57 @@
     listings. -->
     <hostname>streams.wkdu.org</hostname>
 
+    <!-- You can use these two if you only want a single listener -->
+    <!--<port>8000</port> -->
+    <!--<bind-address>127.0.0.1</bind-address>-->
+
     <!-- You may have multiple <listener> elements -->
     <listen-socket>
         <port>80</port>
-        <!-- <bind-address>127.0.0.1</bind-address>-->
-        <!-- <shoutcast-mount>/stream</shoutcast-mount> -->
+        <!-- <bind-address>127.0.0.1</bind-address> -->
     </listen-socket>
     <!--
     <listen-socket>
         <port>8001</port>
+        <ssl>1</ssl>
     </listen-socket>
     -->
 
     <!--<master-server>127.0.0.1</master-server>-->
     <!--<master-server-port>8001</master-server-port>-->
     <!--<master-update-interval>120</master-update-interval>-->
+
+    <!--<master-username>hackme</master-username>-->
     <!--<master-password>hackme</master-password>-->
+
+    <!-- issue above authentication for relays in slave setup -->
+    <!--<master-relay-auth>1</master-relay-auth>-->
 
     <!-- setting this makes all relays on-demand unless overridden, this is
          useful for master relays which do not have <relay> definitions here.
          The default is 0 -->
     <!--<relays-on-demand>1</relays-on-demand>-->
 
+
+    <!-- Request the master server to redirect new listeners to this slave
+         the details passed are based on <hostname> and <port> -->
+    <!--<master-redirect>1</master-redirect>-->
+
+    <!-- The maximum nuber of slaves that can register for new listener 
+    redirection. -->
+    <!--<max-redirect-slaves>10</max-redirect-slaves>-->
+
+    <!-- Relays. State connection information, and by default 
+         request inline metadata for mp3 streams if available.
+         An on-demand relay will only retrieve the stream if
+         there are listeners connected -->
     <!--
     <relay>
         <server>127.0.0.1</server>
         <port>8001</port>
         <mount>/example.ogg</mount>
         <local-mount>/different.ogg</local-mount>
-        <on-demand>0</on-demand>
-
+        <on-demand>1</on-demand>
         <relay-shoutcast-metadata>0</relay-shoutcast-metadata>
     </relay>
     -->
@@ -88,19 +107,17 @@
          like alternative usernames or passwords
     <mount>
         <mount-name>/example-complex.ogg</mount-name>
-
         <username>othersource</username>
-        <password>WKDU_Scaramanga!!917</password>
-
+        <password>hackmemore</password>
         <max-listeners>1</max-listeners>
         <dump-file>/tmp/dump-example1.ogg</dump-file>
         <burst-size>65536</burst-size>
         <fallback-mount>/example2.ogg</fallback-mount>
         <fallback-override>1</fallback-override>
         <fallback-when-full>1</fallback-when-full>
-        <intro>/example_intro.ogg</intro>
+        <intro>/path/to/stream-intro.ogg</intro>
+        <max-listener-duration>3600</max-listener-duration>
         <hidden>1</hidden>
-        <no-yp>1</no-yp>
         <authentication type="htpasswd">
                 <option name="filename" value="myauth"/>
                 <option name="allow_duplicate_users" value="0"/>
@@ -108,97 +125,88 @@
         <on-connect>/home/icecast/bin/stream-start</on-connect>
         <on-disconnect>/home/icecast/bin/stream-stop</on-disconnect>
     </mount>
-     -->
+    -->
+    <!-- other auth possibilities include running a command
+         to do the auth, mount, user and pass are passed via
+         stdin to the program
+    <mount>
+    ....
+        <authentication type="command">
+             <option name="filename" value="auth_verify"/>
+        </authentication>
+        
+        or 
+        for url auth, the add url needs to return a "icecast-auth-user: 1" http
+        header for a user to authenicate. Both urls are sent params via POST,
+        add is sent id, mount, user, pass, ip, useragent
+        remove is passed id, mount, user, pass, duration
+        <authentication type="url">
+             state username/password if url requires it
+             <option name="username" value="admin"/>
+             <option name="password" value="hackme"/>
+             <option name="add"    value="http://myauthserver.com/scripts/add_listener.php"/>
+             <option name="remove" value="http://myauthserver.com/scripts/del_listener.php"/>
+        </authentication>
+    </mount -->
 
-<mount>
+    <!--- MP3 STREAM MOUNT -->
+    <mount>
         <mount-name>/listen.mp3</mount-name>
-
         <username>source</username>
         <password>hackme</password>
-
-        <max-listeners>500</max-listeners>
-
-    <stream-name>WKDU Philadelphia 91.7FM (MP3)</stream-name>
+        <max-listeners>250</max-listeners>
+        <stream-name>WKDU Philadelphia 91.7FM (MP3)</stream-name>
         <stream-description>Drexel University's non-commercial college radio</stream-description>
-        <stream-url>http://wkdu.org</stream-url>
+    <stream-url>http://streams.wkdu.org/listen.mp3</stream-url>
         <genre>Free-Format</genre>
         <bitrate>128kbps</bitrate>
-
-        <!-- <dump-file>/tmp/dump-example1.ogg</dump-file> -->
-        <!-- <burst-size>65536</burst-size> -->
-        <!-- <fallback-mount>/example2.ogg</fallback-mount> -->
-        <!-- <fallback-override>1</fallback-override> -->
-        <!-- <fallback-when-full>1</fallback-when-full> -->
-        <!-- <intro>intro.aac</intro> -->
-        <!-- <hidden>1</hidden> -->
-        <no-yp>1</no-yp>
-        <!--
-        <authentication type="htpasswd">
-                <option name="filename" value="myauth"/>
-                <option name="allow_duplicate_users" value="0"/>
-        </authentication>
-        <on-connect>/home/icecast/bin/stream-start</on-connect>
-        <on-disconnect>/home/icecast/bin/stream-stop</on-disconnect>
-        -->
     </mount>
-
+    
+    <!--- AAC STREAM MOUNT -->
     <mount>
         <mount-name>/listen.aac</mount-name>
-
-    <username>source</username>
-    <password>hackme</password>
-
-    <max-listeners>1000</max-listeners>
-
-    <stream-name>WKDU Philadelphia 91.7FM (AAC+)</stream-name>
-    <stream-description>Drexel University's non-commercial college radio</stream-description>
-    <stream-url>http://wkdu.org</stream-url>
-    <genre>Free-Format</genre>
-    <bitrate>64kbps</bitrate>
-
-        <!-- <dump-file>/tmp/dump-example1.ogg</dump-file> -->
-        <!-- <burst-size>65536</burst-size> -->
-        <!-- <fallback-mount>/example2.ogg</fallback-mount> -->
-        <!-- <fallback-override>1</fallback-override> -->
-        <!-- <fallback-when-full>1</fallback-when-full> -->
-        <!-- <intro>intro.aac</intro> -->
-        <!-- <hidden>1</hidden> -->
-        <no-yp>1</no-yp>
-        <!--
-        <authentication type="htpasswd">
-                <option name="filename" value="myauth"/>
-                <option name="allow_duplicate_users" value="0"/>
-        </authentication>
-        <on-connect>/home/icecast/bin/stream-start</on-connect>
-        <on-disconnect>/home/icecast/bin/stream-stop</on-disconnect>
-        -->
+        <username>source</username>
+        <password>hackme</password>
+        <max-listeners>250</max-listeners>
+        <stream-name>WKDU Philadelphia 91.7FM (AAC)</stream-name>
+        <stream-description>Drexel University's non-commercial college radio</stream-description>
+    <stream-url>http://streams.wkdu.org/listen.aac</stream-url>
+        <genre>Free-Format</genre>
+        <bitrate>128kbps</bitrate>
     </mount>
 
-    <!--
-    <mount>
-        <mount-name>/auth_example.ogg</mount-name>
-        <authentication type="url">
-            <option name="mount_add"       value="http://myauthserver.net/notify_mount.php"/>
-            <option name="mount_remove"    value="http://myauthserver.net/notify_mount.php"/>
-            <option name="listener_add"    value="http://myauthserver.net/notify_listener.php"/>
-            <option name="listener_remove" value="http://myauthserver.net/notify_listener.php"/>
-        </authentication>
-    </mount>
-
-    -->
+    <!--- HE_AAC_v2 STREAM MOUNT -->
+    <!--<mount>
+        <mount-name>/listen.aacplus</mount-name>
+        <username>source</username>
+        <password>hackme</password>
+        <max-listeners>500</max-listeners>
+        <stream-name>WKDU Philadelphia 91.7FM (AAC+ v2)</stream-name>
+        <stream-description>Drexel University's non-commercial college radio</stream-description>
+        <stream-url>http://streams.wkdu.org/listen.aac</stream-url>
+        <genre>Free-Format</genre>
+        <bitrate>56kbps</bitrate>
+    </mount>-->
 
     <fileserve>1</fileserve>
 
+    <!-- set the mountpoint for a shoutcast source to use, the default if not
+         specified is /stream but you can change it here if an alternative is
+         wanted or an extension is required
+    <shoutcast-mount>/live.nsv</shoutcast-mount>
+    -->
+
     <paths>
-    <!-- basedir is only used if chroot is enabled -->
-        <basedir>/usr/share/icecast2</basedir>
+        <!-- basedir is only used if chroot is enabled -->
+        <basedir>/usr/local/share/icecast</basedir>
 
         <!-- Note that if <chroot> is turned on below, these paths must both
              be relative to the new root, not the original root -->
-        <logdir>/var/log/icecast2</logdir>
-        <webroot>/usr/share/icecast2/web</webroot>
-        <adminroot>/usr/share/icecast2/admin</adminroot>
-        <!-- <pidfile>/usr/share/icecast2/icecast.pid</pidfile> -->
+    <logdir>/var/log/icecast2</logdir>
+    <webroot>/usr/local/share/icecast/web</webroot>
+    <adminroot>/usr/local/share/icecast/admin</adminroot>
+        <!-- <pidfile>/usr/local/share/icecast/icecast.pid</pidfile> -->
+        <!-- <ssl_certificate>/usr/local/share/icecast/icecast.pem</ssl_certificate> -->
 
         <!-- Aliases: treat requests for 'source' path as being for 'dest' path
              May be made specific to a port or bound address using the "port"
@@ -211,8 +219,7 @@
              this example will redirect all requests for http://server:port/ to
              the status page
           -->
-        <alias source="/" dest="/status.xsl"/>
-        <x-forwarded-for>127.0.0.1</x-forwarded-for>
+        <alias source="/" dest="/index.html"/>
     </paths>
 
     <logging>
